@@ -16,7 +16,7 @@ Vagrant.configure("2") do |config|
         apt-get update && apt upgrade -y
         sysctl -w net.ipv4.ip_forward=1
         iptables -t nat -A POSTROUTING -s 10.0.0.0/24 -j MASQUERADE
-        echo "10.0.0.6 interno.example1.org interno.example2.org" >> /etc/hosts
+        echo "10.0.0.6 www.pagina1.org www.pagina2.org" >> /etc/hosts
       SHELL
     end
     config.vm.define :servidorweb do |servidorweb|
