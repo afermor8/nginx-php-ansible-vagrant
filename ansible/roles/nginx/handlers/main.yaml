@@ -1,5 +1,5 @@
-- name: Reiniciar apache2
-  service: name=apache2 state=restarted
+- name: Reiniciar nginx
+  service: name=nginx state=restarted
   
   
   
