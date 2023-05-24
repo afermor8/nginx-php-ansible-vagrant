@@ -1,26 +1,18 @@
-- name: Install apache2
+- name: Instalar nginx
   apt:
-    pkg: apache2
+    pkg: nginx
   
-- name: Enable Apache mods.
-  community.general.apache2_module:
-    state: present
-    name: "{{item}}"
-  with_items: 
-    - "{{ mods_enabled }}"
-  notify: restart apache2
-
-- name: Configuración de virtualhost
+- name: Configuración del virtualhost
   template: 
-    src: etc/apache2/sites-available/vhost.j2
-    dest: /etc/apache2/sites-available/{{item["name"]}}.conf
+    src: etc/nginx/sites-available/vhost.j2
+    dest: /etc/nginx/sites-available/{{item["name"]}}.conf
     owner: root
     group: root
     mode: 0644
   with_items:
     - "{{virtualhosts}}"
 
-- name: Create documentroot if it does not exist
+- name: Crear un documentroot si no existe
   ansible.builtin.file:
     path: /{{item["datos"]["documentroot"]}}
     state: directory
@@ -31,18 +23,18 @@
     - "{{virtualhosts}}"
 
 
-- name: Add vhost symlink in sites-enabled.
+- name: Añadir el enlace simbólico de vhost en sites-enabled
   file:
-    src: /etc/apache2/sites-available/{{item["name"]}}.conf
-    dest: /etc/apache2/sites-enabled/{{item["name"]}}.conf
+    src: /etc/nginx/sites-available/{{item["name"]}}.conf
+    dest: /etc/nginx/sites-enabled/{{item["name"]}}.conf
     state: link
     mode: 0755
   with_items:
     - "{{virtualhosts}}"
-  notify: restart apache2
+  notify: Reiniciar nginx
   
 
-- name: Copy index.html
+- name: Copiar index.html
   copy:
     src: index_{{item["name"]}}.html
     dest: /{{item["datos"]["documentroot"]}}/index.html
@@ -53,7 +45,7 @@
     - "{{virtualhosts}}"
 
 
-- name: Copy nuevodirectorio
+- name: Copiar nuevodirectorio
   copy:
     src: nuevodirectorio
     dest: /{{item["datos"]["documentroot"]}}/
