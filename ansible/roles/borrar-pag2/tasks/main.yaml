@@ -1,0 +1,7 @@
+- name: Borrar virtualhost pagina2
+  file:
+    path: /etc/nginx/sites-enabled/{{ item["name"] }}.conf
+    state: absent
+  with_items:
+    - "{{borrarpag2}}"
+  notify: Reiniciar nginx

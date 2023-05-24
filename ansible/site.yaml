@@ -6,6 +6,6 @@
 - hosts: grupo_sw
   become: true
   roles:
-   - role: nginx
-   - role: php  
-
+#   - role: nginx
+#   - role: php  
+   - role: borrar-pag2
